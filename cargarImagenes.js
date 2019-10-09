@@ -1,7 +1,9 @@
 var vp=document.getElementById("laVilla");
 var papel=vp.getContext("2d");
-var max=0;
-var min=420;
+var cantidadAnimales=aleatorio(1,10);
+
+
+
 
 //creacion de variables literales -----------------------------------------------------------
 var fondo = {
@@ -24,6 +26,12 @@ var cerdo = {
 	cargaOk: false
 }
 
+var cerdito = {
+	url: "cerdo.png",
+	cargaOk: false
+}
+
+
 //creacion de un atributo tipo objeto Image a cada variable anterior, asignamos el src y los ponemos a la escucha----------------------
 fondo.imagen=new Image();
 fondo.imagen.src=fondo.url;
@@ -41,9 +49,13 @@ cerdo.imagen=new Image();
 cerdo.imagen.src=cerdo.url;
 cerdo.imagen.addEventListener("load",cargarCerdo);
 
+cerdito.imagen=new Image();
+cerdito.imagen.src=cerdito.url;
+cerdito.imagen.addEventListener("load",cargaCerdito);
+
 //creacion de las funciones-----------------------------------------------------------------------------
 
-function aleatorio(){//da un numero aleatorio entre un min y un max
+function aleatorio(min, max){//da un numero aleatorio entre un min y un max
 	for(var i=0;i<10;i++){
 
 	var resultado=Math.floor(Math.random()*(max-min+1)+min);//ecuacion para calcular el numero aleatrio entre un minimo y un maximo
@@ -76,29 +88,74 @@ function cargarCerdo(evento){
 	dibujar();
 }
 
+function cargaCerdito(){
+	
+cerdito.cargaOk=true;
+dibujar();	
+	
+}
+
 function dibujar(){//aqui se examina si las imagenes fueron cargadas y se dibujan
+
+	
+
 	if(fondo.cargaOk){
 		papel.drawImage(fondo.imagen,0,0);
 	}
 	if (vaca.cargaOk) {
-		for (var i=0;i<10;i++){
-			papel.drawImage(vaca.imagen,aleatorio(),aleatorio());
+
+		
+		for (var i=0;i<cantidadAnimales;i++){
+			var x = aleatorio(0,5);
+   		    var y = aleatorio(0,5);
+   		    var x= x*80;
+   		    var y= y*80;
+			papel.drawImage(vaca.imagen,x,y);
 		}
 		
 	}
 	if (pollo.cargaOk) {
-		for(var i=0;i<5;i++){
-			papel.drawImage(pollo.imagen,aleatorio(),aleatorio());
+		
+		for(var i=0;i<cantidadAnimales;i++){
+			var x = aleatorio(0,4);
+   		    var y = aleatorio(0,4);
+   		    var x= x*80;
+   		    var y= y*80;
+			papel.drawImage(pollo.imagen,x,y);
 		}
 		
 	}
 	if (cerdo.cargaOk){
-		for (var i=0;i<6;i++){
-			papel.drawImage(cerdo.imagen,aleatorio(),aleatorio());
+		
+		for (var i=0;i<cantidadAnimales;i++){
+			var x = aleatorio(0,4.5);
+   		    var y = aleatorio(0,4.5);
+   		    var x= x*80;
+   		    var y= y*80;			
+			papel.drawImage(cerdo.imagen,x,y);
 		}
 		
 	}
+	if(cerdito.cargaOk){
+papel.drawImage(cerdito.imagen,0,0);
+
+
+	}
 }
+
+//--------------------------------codigo para mover el cerdo con las flechas------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
