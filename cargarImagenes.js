@@ -1,7 +1,8 @@
 var vp=document.getElementById("laVilla");
 var papel=vp.getContext("2d");
 var cantidadAnimales=aleatorio(1,10);
-
+var xcerdito;
+var ycerdito;
 
 
 
@@ -28,9 +29,17 @@ var cerdo = {
 
 var cerdito = {
 	url: "cerdo.png",
-	cargaOk: false
+	cargaOk: false,
+	x:0,
+	y:0
 }
 
+var tecla = {
+	LEFT: 37,
+	RIGHT: 39,
+	UP: 38,
+	DOWN: 40
+}
 
 //creacion de un atributo tipo objeto Image a cada variable anterior, asignamos el src y los ponemos a la escucha----------------------
 fondo.imagen=new Image();
@@ -52,6 +61,13 @@ cerdo.imagen.addEventListener("load",cargarCerdo);
 cerdito.imagen=new Image();
 cerdito.imagen.src=cerdito.url;
 cerdito.imagen.addEventListener("load",cargaCerdito);
+
+
+
+vp.addEventListener("mouseup",ponerCerditoMouse);
+
+
+
 
 //creacion de las funciones-----------------------------------------------------------------------------
 
@@ -91,7 +107,7 @@ function cargarCerdo(evento){
 function cargaCerdito(){
 	
 cerdito.cargaOk=true;
-dibujar();	
+
 	
 }
 
@@ -101,6 +117,7 @@ function dibujar(){//aqui se examina si las imagenes fueron cargadas y se dibuja
 
 	if(fondo.cargaOk){
 		papel.drawImage(fondo.imagen,0,0);
+		
 	}
 	if (vaca.cargaOk) {
 
@@ -136,12 +153,56 @@ function dibujar(){//aqui se examina si las imagenes fueron cargadas y se dibuja
 		}
 		
 	}
+	
+}
+
+function ponerCerditoMouse(evento){
+    cerdito.x=evento.offsetX-30;
+    cerdito.y=evento.offsetY-30; 
+    
+
+	
+}
+dibujarCerdito();
+function dibujarCerdito(){
 	if(cerdito.cargaOk){
-papel.drawImage(cerdito.imagen,0,0);
-
-
+    	   papel.drawImage(cerdito.imagen,cerdito.x,cerdito.y);
+       
+       
+		   console.log(cerdito);	
+     
 	}
 }
+
+
+
+window.addEventListener("keyup",moverCerdito);
+function moverCerdito(evento){
+	if (evento.keyCode==tecla.LEFT  && cerdito.cargaOk) {
+		
+		cerdito.x=cerdito.x-10;
+		
+		
+		
+
+	}
+	if (evento.keyCode==tecla.RIGHT) {
+	    cerdito.x=cerdito.x+10;
+
+		
+	}
+	if (evento.keyCode==tecla.UP) {
+			cerdito.y=cerdito.y-10;
+		
+	}
+	if (evento.keyCode==tecla.DOWN) {
+			cerdito.y=cerdito.y+10;
+	
+	}
+	dibujar();
+	dibujarCerdito();
+}
+
 
 //--------------------------------codigo para mover el cerdo con las flechas------
 
