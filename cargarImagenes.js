@@ -1,8 +1,7 @@
 var vp=document.getElementById("laVilla");
 var papel=vp.getContext("2d");
 var cantidadAnimales=aleatorio(1,10);
-var xcerdito;
-var ycerdito;
+
 
 
 
@@ -14,8 +13,12 @@ var fondo = {
 
 var vaca = {
 	url: "vaca.png",
-	cargaOk: false
+	cargaOk: false,
+
+	
 }
+
+
 
 var pollo = {
 	url: "pollo.png",
@@ -41,6 +44,25 @@ var tecla = {
 	DOWN: 40
 }
 
+//----------variables para cpntrolar la posicion de cada animal----agrego variables x y a cada animal siendo un array con la cantidad de animales que se generen
+
+vaca.x=new Array(cantidadAnimales);
+vaca.y=new Array(cantidadAnimales);
+pollo.x=new Array(cantidadAnimales);
+pollo.y=new Array(cantidadAnimales);
+cerdo.x=new Array(cantidadAnimales);
+cerdo.y=new Array(cantidadAnimales);
+
+for(var i=0;i<vaca.x.length;i++){//-----relleno los array de cada animal
+	vaca.x[i]=((aleatorio(0,5))*80);
+    vaca.y[i]=((aleatorio(0,5))*80);
+    pollo.x[i]=((aleatorio(0,5))*80);
+    pollo.y[i]=((aleatorio(0,5))*80);
+    cerdo.x[i]=((aleatorio(0,5))*80);
+    cerdo.y[i]=((aleatorio(0,5))*80);
+	
+}
+
 //creacion de un atributo tipo objeto Image a cada variable anterior, asignamos el src y los ponemos a la escucha----------------------
 fondo.imagen=new Image();
 fondo.imagen.src=fondo.url;
@@ -63,8 +85,11 @@ cerdito.imagen.src=cerdito.url;
 cerdito.imagen.addEventListener("load",cargaCerdito);
 
 
+//--a la escucha para eventos de mouse
 
-vp.addEventListener("mouseup",ponerCerditoMouse);
+vp.addEventListener("mousedown",coordenadaCerditoMouse);
+
+window.addEventListener("keydown",moverCerdito);//para el evento de cuando se pulsa la tecla
 
 
 
@@ -80,7 +105,7 @@ function aleatorio(min, max){//da un numero aleatorio entre un min y un max
 
 }
 
-
+            
 
 
 function cargarFondo(evento){//las siguientes funcionoes de carga cambia en atributo de cada variable cargarOk por el valor de true y llama la funcion de dibujar`
@@ -111,6 +136,8 @@ cerdito.cargaOk=true;
 	
 }
 
+			
+
 function dibujar(){//aqui se examina si las imagenes fueron cargadas y se dibujan
 
 	
@@ -123,73 +150,71 @@ function dibujar(){//aqui se examina si las imagenes fueron cargadas y se dibuja
 
 		
 		for (var i=0;i<cantidadAnimales;i++){
-			var x = aleatorio(0,5);
-   		    var y = aleatorio(0,5);
-   		    var x= x*80;
-   		    var y= y*80;
-			papel.drawImage(vaca.imagen,x,y);
+			
+			papel.drawImage(vaca.imagen,vaca.x[i],vaca.y[i]);
+
 		}
 		
 	}
 	if (pollo.cargaOk) {
 		
 		for(var i=0;i<cantidadAnimales;i++){
-			var x = aleatorio(0,4);
-   		    var y = aleatorio(0,4);
-   		    var x= x*80;
-   		    var y= y*80;
-			papel.drawImage(pollo.imagen,x,y);
+			
+			papel.drawImage(pollo.imagen,pollo.x[i],pollo.y[i]);
 		}
 		
 	}
 	if (cerdo.cargaOk){
 		
+
 		for (var i=0;i<cantidadAnimales;i++){
-			var x = aleatorio(0,4.5);
-   		    var y = aleatorio(0,4.5);
-   		    var x= x*80;
-   		    var y= y*80;			
-			papel.drawImage(cerdo.imagen,x,y);
+						
+			papel.drawImage(cerdo.imagen,cerdo.x[i],cerdo.y[i]);
 		}
 		
 	}
+
+
+
+
 	
 }
 
-function ponerCerditoMouse(evento){
-    cerdito.x=evento.offsetX-30;
-    cerdito.y=evento.offsetY-30; 
+
+function coordenadaCerditoMouse(evento){//estea funcion es para el evento mousedown para cuando sea pulsado el mouse me genere las coordenadas de posicion de cerdito`
+	
+	cerdito.x=evento.offsetX-30;
+    cerdito.y=evento.offsetY-30;
     
-
-	
 }
-dibujarCerdito();
-function dibujarCerdito(){
+
+function dibujarCerdito(){//funcion independiente para dibujar el cerdito que se va a mover
 	if(cerdito.cargaOk){
     	   papel.drawImage(cerdito.imagen,cerdito.x,cerdito.y);
        
        
-		   console.log(cerdito);	
+		  
      
 	}
 }
 
 
 
-window.addEventListener("keyup",moverCerdito);
-function moverCerdito(evento){
+function moverCerdito(evento){//funcion para el movimiento del cerdito con las flechas
+
+	
 	if (evento.keyCode==tecla.LEFT  && cerdito.cargaOk) {
 		
 		cerdito.x=cerdito.x-10;
 		
-		
+	
 		
 
 	}
 	if (evento.keyCode==tecla.RIGHT) {
 	    cerdito.x=cerdito.x+10;
 
-		
+	
 	}
 	if (evento.keyCode==tecla.UP) {
 			cerdito.y=cerdito.y-10;
@@ -199,12 +224,14 @@ function moverCerdito(evento){
 			cerdito.y=cerdito.y+10;
 	
 	}
-	dibujar();
+    dibujar();
+
 	dibujarCerdito();
+	cerdito.cargaOk=true;
+
 }
 
 
-//--------------------------------codigo para mover el cerdo con las flechas------
 
 
 
